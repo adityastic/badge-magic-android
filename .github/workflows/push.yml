@@ -20,6 +20,9 @@ jobs:
           sudo udevadm control --reload-rules
           sudo udevadm trigger --name-match=kvm
 
+      - name: Set up Flutter
+        uses: subosito/flutter-action@v2
+  
       - name: create AVD and generate snapshot for caching
         uses: reactivecircus/android-emulator-runner@v2
         with:
@@ -30,15 +33,10 @@ jobs:
           force-avd-creation: false
           emulator-options: -no-snapshot-save -no-window -gpu swiftshader_indirect -noaudio -no-boot-anim -camera-back none
           disable-animations: true
-          script: echo "Generated AVD snapshot for caching."
-
-      - name: Set up Flutter
-        uses: subosito/flutter-action@v2
-
-      - run: |
-          flutter pub get
-          flutter drive --driver=test_driver/test_driver.dart --target=test_driver/main_test.dart -d pixel_6
-          ls -l .
+          script: |
+            flutter pub get
+            flutter drive --driver=test_driver/test_driver.dart --target=test_driver/main_test.dart -d pixel_6
+            ls -l .
 
   common:
     runs-on: ubuntu-latest
