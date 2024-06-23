@@ -34,6 +34,7 @@ jobs:
         uses: subosito/flutter-action@v2
 
       - run: |
+          flutter pub get
           dart tools/screenshots.dart;
           ls -l .
 
