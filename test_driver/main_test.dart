@@ -28,7 +28,7 @@ Future<void> main() async {
 
   group('Screenshots', () {
     test('Home Screen', () async {
-      await driver.waitFor(find.byValueKey(homeScreenTitle));
+      await driver.waitFor(find.byValueKey(homeScreenTitleKey));
       await screenshot.capture('01');
     });
 

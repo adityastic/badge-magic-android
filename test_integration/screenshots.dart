@@ -1,10 +1,10 @@
 import 'dart:io';
 
-import 'package:badgemagic/view/homescreen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:integration_test/integration_test.dart';
 import 'package:badgemagic/main.dart' as app;
+import 'package:badgemagic/constants.dart';
 import 'utils.dart';
 
 void main() async {
@@ -13,7 +13,6 @@ void main() async {
     return Future(() async {
       WidgetsApp.debugAllowBannerOverride = false; // Hide the debug banner
       if (Platform.isAndroid) {
-        // from dart:io
         await binding.convertFlutterSurfaceToImage();
       }
     });
@@ -23,11 +22,10 @@ void main() async {
     testWidgets('Take Screenshots', (tester) async {
       app.main();
 
-      final homeScreenTitle =
-          find.byKey(const ValueKey(HomeScreen.homeScreenTitle));
+      final homeScreenTitle = find.byKey(const ValueKey(homeScreenTitleKey));
 
       await pumpUntilFound(tester, homeScreenTitle);
-      await binding.takeScreenshot('0-home');
+      await binding.takeScreenshot('01');
     });
   });
 }

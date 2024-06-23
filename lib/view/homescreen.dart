@@ -75,7 +75,7 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
         appBar: AppBar(
           backgroundColor: Colors.red,
           title: const Text(
-            key: Key(homeScreenTitle),
+            key: Key(homeScreenTitleKey),
             'Badge Magic',
             style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
           ),
