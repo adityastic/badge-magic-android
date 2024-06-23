@@ -16,7 +16,7 @@ Future<void> main() async {
 
   // For each emulator in the list, we run `flutter drive`.
   await emu.forEach([
-    'pixel_6',
+    'Pixel_6',
   ])((device) async {
     for (final c in configs) {
       final p = await emu.drive(
