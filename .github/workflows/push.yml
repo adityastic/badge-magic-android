@@ -5,7 +5,8 @@ on:
     branches: ["flutter_app"]
 
 env:
-  EMULATOR_NAME: Pixel
+  EMULATOR_API: 34
+  EMULATOR_ARCH: x86_64
 
 jobs:
   screenshots:
@@ -20,14 +21,38 @@ jobs:
           sudo udevadm control --reload-rules
           sudo udevadm trigger --name-match=kvm
 
+      - name: AVD cache
+        uses: actions/cache@v4
+        id: avd-cache
+        with:
+          path: |
+            ~/.android/avd/*
+            ~/.android/adb*
+          key: avd-${{ env.EMULATOR_API }}
+
+      - name: create AVD and generate snapshot for caching
+        if: steps.avd-cache.outputs.cache-hit != 'true'
+        uses: reactivecircus/android-emulator-runner@v2
+        with:
+          api-level: ${{ env.EMULATOR_API }}
+          arch: ${{ env.EMULATOR_ARCH }}
+          profile: pixel_6
+          avd-name: pixel_6
+          force-avd-creation: false
+          emulator-options: -no-window -gpu swiftshader_indirect -noaudio -no-boot-anim -camera-back none
+          disable-animations: false
+          script: echo "Generated AVD snapshot for caching."
+
       - name: Set up Flutter
         uses: subosito/flutter-action@v2
+        with:
+          cache: true
   
       - name: create AVD and generate snapshot for caching
         uses: reactivecircus/android-emulator-runner@v2
         with:
-          api-level: 34
-          arch: x86_64
+          api-level: ${{ env.EMULATOR_API }}
+          arch: ${{ env.EMULATOR_ARCH }}
           profile: pixel_6
           avd-name: pixel_6
           force-avd-creation: false
@@ -35,8 +60,6 @@ jobs:
           disable-animations: true
           script: |
             flutter drive --driver=test_driver/test_driver.dart --target=test_integration/screenshots.dart -d emulator
-            ls -l .
-            ls -l screenshots
 
   common:
     runs-on: ubuntu-latest
