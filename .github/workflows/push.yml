@@ -34,8 +34,9 @@ jobs:
           emulator-options: -no-snapshot-save -no-window -gpu swiftshader_indirect -noaudio -no-boot-anim -camera-back none
           disable-animations: true
           script: |
-            flutter drive --target=test_integration/screenshots.dart -d emulator
+            flutter drive --driver=test_driver/test_driver.dart --target=test_integration/screenshots.dart -d emulator
             ls -l .
+            ls -l screenshots
 
   common:
     runs-on: ubuntu-latest
