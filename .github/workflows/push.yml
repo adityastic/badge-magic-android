@@ -35,7 +35,7 @@ jobs:
           disable-animations: true
           script: |
             flutter pub get
-            flutter drive --driver=test_driver/test_driver.dart --target=test_driver/main_test.dart -d emulator
+            flutter drive --target=test_driver/main_test.dart -d emulator
             ls -l .
 
   common:
