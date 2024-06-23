@@ -8,6 +8,8 @@ import 'package:fluttertoast/fluttertoast.dart';
 import 'package:provider/provider.dart';
 
 class HomeScreen extends StatefulWidget {
+  static const homeScreenTitle = "bm_hm_title";
+
   const HomeScreen({super.key});
 
   @override
@@ -74,6 +76,7 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
         appBar: AppBar(
           backgroundColor: Colors.red,
           title: const Text(
+            key: Key(HomeScreen.homeScreenTitle),
             'Badge Magic',
             style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
           ),
@@ -81,92 +84,95 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
         ),
         body: SafeArea(
           child: SizedBox(
-            height: height,
-            width: width,
-            child: Column(
-              children: [
-                const BMBadge(),
-                Container(
-                  margin: const EdgeInsets.all(15),
-                  child: Material(
-                    borderRadius: BorderRadius.circular(10),
-                    elevation: 10,
-                    child: TextField(
-                      controller: cardData.getController(),
-                      decoration: InputDecoration(
-                          border: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(10)),
-                          prefixIcon: const Icon(Icons.tag_faces_outlined),
-                          focusedBorder: const OutlineInputBorder(
-                              borderSide: BorderSide(color: Colors.red))),
+              height: height,
+              width: width,
+              child: SingleChildScrollView(
+                child: Column(
+                  children: [
+                    const BMBadge(),
+                    Container(
+                      margin: const EdgeInsets.all(15),
+                      child: Material(
+                        borderRadius: BorderRadius.circular(10),
+                        elevation: 10,
+                        child: TextField(
+                          controller: cardData.getController(),
+                          decoration: InputDecoration(
+                              border: OutlineInputBorder(
+                                  borderRadius: BorderRadius.circular(10)),
+                              prefixIcon: const Icon(Icons.tag_faces_outlined),
+                              focusedBorder: const OutlineInputBorder(
+                                  borderSide: BorderSide(color: Colors.red))),
+                        ),
+                      ),
                     ),
-                  ),
-                ),
-                TabBar(
-                  indicatorSize: TabBarIndicatorSize.label,
-                  controller: _tabController,
-                  tabs: const [
-                    Tab(text: 'Speed'),
-                    Tab(text: 'Animation'),
-                    Tab(text: 'Effects'),
+                    TabBar(
+                      indicatorSize: TabBarIndicatorSize.label,
+                      controller: _tabController,
+                      tabs: const [
+                        Tab(text: 'Speed'),
+                        Tab(text: 'Animation'),
+                        Tab(text: 'Effects'),
+                      ],
+                    ),
+                    SingleChildScrollView(
+                      child: Column(
+                        children: [
+                          AspectRatio(
+                            aspectRatio: 1.5,
+                            child: TabBarView(
+                              physics: const NeverScrollableScrollPhysics(),
+                              controller: _tabController,
+                              children: const [
+                                RadialDial(),
+                                AnimationTab(),
+                                EffectTab(),
+                              ],
+                            ),
+                          ),
+                          Container(
+                            padding: EdgeInsets.only(
+                                bottom: height * 0.2,
+                                top: height *
+                                    0.02), // Adjust the value as needed
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                GestureDetector(
+                                  onTap: () {
+                                    if (cardData.getController().text.isEmpty) {
+                                      Fluttertoast.showToast(
+                                        msg:
+                                            "Please enter some text to transfer.",
+                                        toastLength: Toast.LENGTH_SHORT,
+                                        gravity: ToastGravity.BOTTOM,
+                                        backgroundColor: Colors.red,
+                                        textColor: Colors.white,
+                                        fontSize: 16.0,
+                                      );
+                                      return;
+                                    }
+                                    transferData(context, cardData);
+                                  },
+                                  child: Container(
+                                    padding: const EdgeInsets.symmetric(
+                                        horizontal: 20, vertical: 8),
+                                    decoration: BoxDecoration(
+                                      borderRadius: BorderRadius.circular(10),
+                                      color: Colors.grey.shade400,
+                                    ),
+                                    child: const Text('Transfer'),
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
                   ],
                 ),
-                SingleChildScrollView(
-                  child: Column(
-                    children: [
-                      AspectRatio(
-                        aspectRatio: 1.5,
-                        child: TabBarView(
-                          physics: const NeverScrollableScrollPhysics(),
-                          controller: _tabController,
-                          children: const [
-                            RadialDial(),
-                            AnimationTab(),
-                            EffectTab(),
-                          ],
-                        ),
-                      ),
-                      Container(
-                        padding: EdgeInsets.only(
-                            bottom: height * 0.2,
-                            top: height * 0.02), // Adjust the value as needed
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            GestureDetector(
-                              onTap: () {
-                                if (cardData.getController().text.isEmpty) {
-                                  Fluttertoast.showToast(
-                                    msg: "Please enter some text to transfer.",
-                                    toastLength: Toast.LENGTH_SHORT,
-                                    gravity: ToastGravity.BOTTOM,
-                                    backgroundColor: Colors.red,
-                                    textColor: Colors.white,
-                                    fontSize: 16.0,
-                                  );
-                                  return;
-                                }
-                                transferData(context, cardData);
-                              },
-                              child: Container(
-                                padding: const EdgeInsets.symmetric(
-                                    horizontal: 20, vertical: 8),
-                                decoration: BoxDecoration(
-                                  borderRadius: BorderRadius.circular(10),
-                                  color: Colors.grey.shade400,
-                                ),
-                                child: const Text('Transfer'),
-                              ),
-                            ),
-                          ],
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-              ],
-            ),
-          ),
+              )),
         ),
       ),
     );
