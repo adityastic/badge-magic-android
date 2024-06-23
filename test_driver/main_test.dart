@@ -12,7 +12,6 @@ Future<void> main() async {
   final screenshot = emu.screenshotHelper(
     androidPath: 'screenshots/android',
     iosPath: 'screenshots/ios',
-    suffixes: [Environment.getString('locale')!],
   );
 
   setUpAll(() async {
