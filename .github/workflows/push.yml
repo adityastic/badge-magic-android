@@ -37,7 +37,7 @@ jobs:
 
       - run: |
           flutter pub get
-          dart tools/screenshots.dart;
+          flutter drive --driver=test_driver/test_driver.dart --target=test_driver/main_test.dart
           ls -l .
 
   common:

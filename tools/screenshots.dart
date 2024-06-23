@@ -11,7 +11,6 @@ Future<void> main() async {
 
   final configs = [
     {'locale': 'en'},
-    {'locale': 'fr'},
   ];
 
   // For each emulator in the list, we run `flutter drive`.
