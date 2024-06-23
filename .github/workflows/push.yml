@@ -16,7 +16,7 @@ jobs:
 
       - name: Setup AVD
         run: |
-          echo "$ANDROID_HOME/cmdline-tools/latest/bin:$ANDROID_HOME/emulator:$ANDROID_HOME/tools:$ANDROID_HOME/platform-tools:$ANDROID_HOME/build-tools/${{ env.ANDROID_BUILD_TOOLS_VERSION }}" >> $GITHUB_PATH
+          export PATH="$ANDROID_HOME/cmdline-tools/latest/bin:$ANDROID_HOME/emulator:$ANDROID_HOME/tools:$ANDROID_HOME/platform-tools:$ANDROID_HOME/build-tools/34.0.0:$PATH"
           yes Y | sdkmanager --licenses
           sdkmanager --install system-images;android-34;google_apis_playstore;x86_64 platforms;android-34 build-tools;34.0.0 platform-tools emulator
           echo "no" | avdmanager --verbose create avd --force -n $EMULATOR_NAME --abi "google_apis_playstore/x86_64" -k "system-images;android-34;$google_apis_playstore;x86_64"
