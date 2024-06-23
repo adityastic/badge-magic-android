@@ -1,7 +1,12 @@
 name: Badge Magic Push CI
+
 on:
   push:
     branches: ["flutter_app"]
+
+env:
+  EMULATOR_NAME: Pixel
+
 jobs:
   screenshots:
     runs-on: macos-latest
@@ -9,20 +14,14 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      # - name: Enable KVM
-      #   run: |
-      #     echo 'KERNEL=="kvm", GROUP="kvm", MODE="0666", OPTIONS+="static_node=kvm"' | sudo tee /etc/udev/rules.d/99-kvm4all.rules
-      #     sudo udevadm control --reload-rules
-      #     sudo udevadm trigger --name-match=kvm
-
-      - name: run tests
-        uses: reactivecircus/android-emulator-runner@v2
-        with:
-          api-level: 34
-          target: google_apis
-          arch: x86_64
-          emulator-options: -no-window -gpu swiftshader_indirect -noaudio -no-boot-anim -camera-back none
-          script: echo "Generated AVD snapshot for caching."
+      - name: Setup AVD
+        run: |
+          echo "$ANDROID_HOME/cmdline-tools/latest/bin:$ANDROID_HOME/emulator:$ANDROID_HOME/tools:$ANDROID_HOME/platform-tools:$ANDROID_HOME/build-tools/${{ env.ANDROID_BUILD_TOOLS_VERSION }}" >> $GITHUB_PATH
+          yes Y | sdkmanager --licenses
+          sdkmanager --install system-images;android-34;google_apis_playstore;x86_64 platforms;android-34 build-tools;34.0.0 platform-tools emulator
+          echo "no" | avdmanager --verbose create avd --force -n $EMULATOR_NAME --abi "google_apis_playstore/x86_64" -k "system-images;android-34;$google_apis_playstore;x86_64"
+          chmod +x ./.github/scripts/start_emu_headless.sh
+          EMULATOR_TIMEOUT=$EMULATOR_TIMEOUT EMULATOR_NAME=$EMULATOR_NAME ./.github/scripts/start_emu_headless.sh
 
       - uses: futureware-tech/simulator-action@v3
         with:
