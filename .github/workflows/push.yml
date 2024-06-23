@@ -37,7 +37,7 @@ jobs:
 
       - run: |
           flutter pub get
-          flutter drive --driver=test_driver/test_driver.dart --target=test_driver/main_test.dart --device=pixel_6
+          flutter drive --driver=test_driver/test_driver.dart --target=test_driver/main_test.dart -d pixel_6
           ls -l .
 
   common:
