@@ -1,8 +1,7 @@
+import 'package:badgemagic/constants.dart';
 import 'package:emulators/emulators.dart';
 import 'package:flutter_driver/flutter_driver.dart';
 import 'package:test/test.dart';
-
-import 'package:badgemagic/view/homescreen.dart';
 
 Future<void> main() async {
   // Connect to flutter driver
@@ -30,7 +29,7 @@ Future<void> main() async {
 
   group('Screenshots', () {
     test('Home Screen', () async {
-      await driver.waitFor(find.byValueKey(HomeScreen.homeScreenTitle));
+      await driver.waitFor(find.byValueKey(homeScreenTitle));
       await screenshot.capture('01');
     });
 

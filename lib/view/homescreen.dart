@@ -1,3 +1,4 @@
+import 'package:badgemagic/constants.dart';
 import 'package:badgemagic/providers/badge_message_provider.dart';
 import 'package:badgemagic/providers/cardsprovider.dart';
 import 'package:badgemagic/view/widgets/homescreentabs.dart';
@@ -8,8 +9,6 @@ import 'package:fluttertoast/fluttertoast.dart';
 import 'package:provider/provider.dart';
 
 class HomeScreen extends StatefulWidget {
-  static const homeScreenTitle = "bm_hm_title";
-
   const HomeScreen({super.key});
 
   @override
@@ -76,7 +75,7 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
         appBar: AppBar(
           backgroundColor: Colors.red,
           title: const Text(
-            key: Key(HomeScreen.homeScreenTitle),
+            key: Key(homeScreenTitle),
             'Badge Magic',
             style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
           ),
